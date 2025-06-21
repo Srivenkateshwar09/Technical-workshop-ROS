@@ -185,6 +185,21 @@ git clone --recurse-submodules https://github.com/Srivenkateshwar09/Technical-wo
 cd ..
 colcon build
 ```
+To source the model of turtlebot
+```
+echo "export TURTLEBOT3_MODEL=burger" >> ~/.bashrc
+source ~/.bashrc
+```
+To run the turtlbot simulation
+```
+ros2 launch workshop turtlebot_launch.py
+```
+
+To run the node 
+```
+cd src/workshop/src
+python3 run controller.py
+```
 
 ---
 
