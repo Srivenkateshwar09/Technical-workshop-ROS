@@ -79,22 +79,28 @@ git --version
 ### 1. Setup Locale
 
 ```bash
-sudo apt update && sudo apt install locales -y
+locale  # check for UTF-8
+
+sudo apt update && sudo apt install locales
 sudo locale-gen en_US en_US.UTF-8
 sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 export LANG=en_US.UTF-8
+
+locale  # verify settings
 ```
 
 ### 2. Add ROS 2 Repository
 
 ```bash
-sudo apt install software-properties-common -y
+sudo apt install software-properties-common
 sudo add-apt-repository universe
-sudo apt update && sudo apt install curl -y
-curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
 ```
-
+```
+sudo apt update && sudo apt install curl -y
+export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F\" '{print $4}')
+curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo $VERSION_CODENAME)_all.deb" # If using Ubuntu derivates use $UBUNTU_CODENAME
+sudo apt install /tmp/ros2-apt-source.deb
+```
 ### 3. Install ROS 2 Humble Desktop
 
 ```bash
@@ -182,4 +188,4 @@ colcon build
 
 ---
 
-**End of Setup Guide**
+
